@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0085)https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab08/lab08.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./bootstrap.css" rel="stylesheet">
+    
+  </head>
+
+  <body style="background: transparent; margin: 0pt">
+    
+    <div class="row-fluid">
+      
+
+      <h2>Atividade de Laboratório 8</h2>
+
+      <h3>Objetivos</h3>
+      
+      <p>
+
+	O objetivo desta atividade é exercitar o conceito de funções e ABI na arquitetura ARM. 
+      </p>
+
+      <h3>Descrição</h3>
+
+      <p>
+	Robinson Late é um aluno da Unicamp que sempre chega
+	atrasado na aula de MC404.  Preocupado com a perda de conteúdo 
+	importante exposto em sala da aula, ele decidiu construir um
+	aplicativo que calculasse um caminho entre sua residência, a
+	república Broken Clock, e o Ciclo Básico. Após horas de
+	planejamento, ele considerou que a melhor alternativa seria
+	construir a interface do aplicativo em C e o algoritmo de
+	busca de caminho utilizando a linguagem de montagem do
+	ARM. Entretanto, como chegou atrasado a todas as aulas de ARM,
+	ele conseguiu escrever apenas a parte em C do aplicativo e
+	pediu a você, seu dedicado e pontual colega, que
+	implementasse o restante.
+      </p>
+
+      <p>
+	Você deve implementar o <b>algoritmo de DFS recursivo</b>
+	(<a href="https://courses.cs.washington.edu/courses/cse326/03su/homework/hw3/dfs.html" target="_blank">https://courses.cs.washington.edu/courses/cse326/03su/homework/hw3/dfs.html</a>)
+	para encontrar um caminho entre a república e o Ciclo
+	Básico. Para isso, você receberá, já implementado em C, a
+	função <tt>_start()</tt> que carrega o mapa da cidade; uma função <tt>int
+	daParaPassar(int x, int y)</tt> que retorna '0' caso não seja
+	possível passar na posição (X, Y) e '1' caso seja possível;
+	duas funções que retornam a posição atual do Robinson (<tt>int
+	posicaoXRobinson()</tt> e <tt>int posicaoYRobinson()</tt>) e 
+	duas funções
+	que retornam a posição onde ele quer chegar (<tt>int
+	  posicaoXLocal()</tt> e <tt>int posicaoYLocal()</tt>). 
+	No final, você deve
+	imprimir o resultado como as posições (X, Y) do caminho em
+	cada linha. A primeira tupla deve ser a posição do local e a
+	última a posição do Robinson. É possível que não exista
+	caminho, nesse caso deve ser impresso: "Não existe um
+	caminho!". O tamanho máximo de um mapa será de 10
+	posições, ou seja, de 0 a 9.
+      </p>
+
+      <p>
+	Você deverá implementar a sua solução em linguagem de montagem do ARM e
+	ligar com o código C fornecido. A sua solução deverá conter
+	uma função chamada: <tt>void ajudaORobinson()</tt> que será
+	invocada pela função <tt>main</tt>.
+      </p>
+
+      <p>Obs.: 
+	</p><ol>
+	  <li>
+	    as movimentações do caminho podem ser na horizontal,
+	    vertical ou na diagonal com no máximo uma casa de
+	    distância.
+	  </li>
+	  <li>
+	    você pode pintar o mapa para saber o que já foi visitado,
+	    veja as funções <tt>int foiVisitado(int, int)</tt>
+	    e <tt>void visitaCelula(int, int)</tt> (reveja o
+	    funcionamento do DFS).
+	  </li>
+	  <li>
+	    reveja no lab 06 como imprimir textos e como converter
+	    números em texto em ARM (você pode copiar e adaptar o
+	    código).
+	  </li>
+	</ol>
+      <p></p>
+
+      <h3>Exemplo</h3>
+
+      <p>
+	Entrada:
+</p><pre>0 1 2 3 4 5 6 7 8 9
+X X X X X X X X X X 0
+X _ _ _ X X _ X _ X 1
+X _ X _ _ X _ _ _ X 2
+X R X X _ _ _ X _ X 3
+X _ X _ _ X _ _ _ X 4
+X _ _ _ X X _ X _ X 5
+X _ X _ _ X _ X _ X 6
+X _ _ X _ _ _ X _ X 7
+X _ _ L _ X _ _ _ X 8
+X X X X X X X X X X</pre>
+      <p></p>
+      <p>
+	Uma das possíveis saídas:
+
+</p><pre>3 8
+2 7
+1 6
+1 5
+1 4
+1 3</pre>
+      <p></p>
+
+      <h3>Compilação</h3>
+
+      <p>
+	Serão disponibilizados dois códigos: <tt>dfs.h</tt>
+	e <tt>mapa.c</tt>. O primeiro é uma API (<i>Application
+	Programming Interface</i>) que possui as definições de rotinas
+	de suporte que serão implementadas em linguagem de
+	montagem. Neste caso há apenas a rotina
+	<tt>ajudaORobinson()</tt> que será chamada pela função 
+	<tt>_start()</tt> do <tt>mapa.c</tt>. 
+	Para implementar esta rotina, é preciso criar um
+	arquivo <tt>dfs.s</tt> e implementar a rotina descrita no arquivo
+	<tt>dfs.h</tt>.
+      </p>
+
+      <p>
+	Como visto em sala de aula, cada rotina deve ser identificada
+	por um rótulo igual ao nome da rotina em "C". Além disso, para
+	permitir que uma rotina implementada em um arquivo seja
+	chamada de outro arquivo você deve sinalizar para o ligador
+	(<i>linker</i>) que o rótulo que representa a rotina é um símbolo
+	global. Para fazer isso, basta informar ao montador que o
+	rótulo da rotina é um símbolo global através da diretiva
+	<tt>.global</tt>. O arquivo <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab08/example.s"><tt>example.s</tt> 
+	  </a> apresenta um 
+	exemplo com duas
+	rotinas onde a rotina <tt>dummy_routine1</tt> é definida como global
+	através do uso da diretiva <tt>.global</tt>. Observe que a outra rotina
+	(<tt>dummy_routine2</tt>) não é declarada como global.
+      </p>
+
+      <p>
+	O segundo arquivo disponibilizado é o código C onde o programa
+	começa a ser executado.
+      </p>
+
+<h4>Arquivos disponibilizados</h4>
+<p>
+  </p><ul>
+    <li><a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab08/dfs.h">dfs.h</a></li>
+    <li><a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab08/mapa.c">mapa.c</a></li>
+  </ul>
+<p></p>
+
+<h4>Configuração de variáveis de ambiente:</h4>
+<pre>source /home/specg12-1/mc404/simulador/set_path.sh</pre>
+
+<h4>Geração do arquivo .s referente ao mapa.c:</h4>
+<pre>arm-eabi-gcc mapa.c -S -o mapa.s</pre>
+
+<h4>Geração dos arquivos-objeto:</h4>
+<pre>arm-eabi-as mapa.s -o mapa.o
+arm-eabi-as dfs.s -o dfs.o</pre>
+ 
+<h4>Ligação:</h4>
+<pre>arm-eabi-ld mapa.o dfs.o -o program -Ttext=0x77802000 -Tdata=0x77803000</pre>
+ 
+<h4>Geração da imagem do cartão SD:</h4>
+<pre>mksd.sh --so /home/specg12-1/mc404/simulador/dummyos.elf --user program</pre>
+ 
+<h4>Importante:</h4> 
+<p>
+As ferramentas usadas na compilação atual supõem que a função <tt>_start</tt> inicia no endereço <tt>0x77802000</tt> e salta para este endereço após iniciar o sistema. 
+Para posicionar a função <tt>_start</tt> neste endereço, nós utilizamos a <i>flag</i> <tt>-Ttext=0x77802000</tt> para sinalizar ao ligador que todas as seções <tt>.text</tt> sejam posicionadas a partir do endereço <tt>0x77802000</tt>. 
+Para que a função <tt>_start</tt> seja posicionada nesse endereço, ela deve ser a primeira função no arquivo <tt>mapa.c</tt> e o arquivo <tt>mapa.o</tt> deve ser o primeiro na lista de arquivos passados para o ligador. 
+Você pode utilizar o desmontador (<tt>objdump</tt>) para inspecionar o programa programa e verificar se a função <tt>_start</tt> foi de fato associada ao endereço <tt>0x77802000</tt>.
+ </p>
+
+<h4>Simulação:</h4>
+<pre>arm-sim --rom=/home/specg12-1/mc404/simulador/dumboot.bin --sd=disk.img</pre>
+
+      <h3>Entrega e avaliação</h3>
+
+      <p>
+	<b>Você deve submeter APENAS um arquivo no SuSy,
+	chamado <tt>raXXXXXX.s</tt>, em que XXXXXX é seu ra com 6
+	dígitos</b>.
+      </p>
+
+      <p>Endereço da atividade no sistema SuSy: 	
+
+      </p><p>
+	O arquivo referente à atividade deve ser submetido para avaliação
+	utilizando-se o sistema Susy em:
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/08ab">https://susy.ic.unicamp.br:9999/mc404abef/08ab</a> ou 
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/08ef">https://susy.ic.unicamp.br:9999/mc404abef/08ef</a>. 
+      </p>
+
+    </div>
+    
+  
+
+
+</body></html>

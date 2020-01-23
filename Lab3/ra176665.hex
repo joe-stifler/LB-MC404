@@ -1,0 +1,16 @@
+000 01 3FF 06 022 # carrego o contador para AC; subtraio 1 do AC
+001 21 3FF 0D 002 # armazeno valor atualizado no contador; pulo para proxima linha
+002 01 3FD 12 004 # carrego a posicao do vetor 1; atualizo o endereco do apontador 1 com os 12 bits a direita de AC
+003 01 3FE 13 004 # carrego a posicao do vetor 2; atualizo o endereco do apontador 2 com os 12 bits a direita de AC
+004 09 000 0B 000 # carrego o valor do endereco do vetor 1 para MQ; multiplico este valor com o valor do endereco do vetor 2
+005 0A 000 05 025 # carrego o valor de MQ para AC; somo com a minha resposta armazenada em 0x025
+006 21 025 01 3FF # armazeno a resposta atualizada (0x025); carrego o contador em AC
+007 06 022 21 3FF # subtraio 1 de AC; armazeno valor atualizado do contador (0x3FF)
+008 01 3FD 05 022 # carrego posicao do endereco 1 atual para AC; somo 1 em AC
+009 21 3FD 01 3FE # armazeno valor atualizado  do endereco 1; carrego posicao do endereco 2 atual em AC
+00A 05 022 21 3FE # somo 1 em AC; armazeno valor atualizado do endereco 2
+00B 01 3FF 0F 002 # carrego o va00lor do contador (3FF) para AC; dou um jump para a posicao 0x002 se contador >= 0
+00C 01 025 0D 400 # carrego minha resposta para AC; dou um jump para o final da memoria
+
+022 00 000 00 001 # constante 1
+025 00 000 00 000 # inicializo resposta com 0

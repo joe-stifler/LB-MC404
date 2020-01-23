@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0085)https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab04/lab04.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./lab04_files/bootstrap.css" rel="stylesheet">
+    
+  </head>
+
+  <body style="background: transparent; margin: 0pt">
+    
+    <div class="row-fluid">
+      
+
+      <h2>Atividade de Laboratório 4</h2>
+
+      <h3>Objetivos</h3>
+
+        O objetivo desta atividade é exercitar o conceito de programação por meio de linguagens de montagem. Você irá realizar a mesma atividade dos laboratórios 02 e 03, contudo, agora, utilizando de uma linguagem de montagem para o IAS 
+<a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/anexos/programando_o_IAS.pdf">(definida na apostila)</a> e um montador.
+
+   
+      <h4>Utilizando o Montador</h4>
+
+      <p>
+	Para entender o funcionamento do montador, leia o exemplo a seguir de um código de montagem para IAS e reflita sobre as seguintes perguntas:
+
+</p><pre> .org 0x000                       
+ laco:                            
+    LOAD M(var_x)
+    SUB  M(const1)                 
+    JUMP M(laco)                   
+  .org 0x100
+  var_x: 
+  .word 0000000009
+  const1: 
+  .word 0x0000000001</pre>
+
+	<ol>
+	 <li>O que esse código faz? </li>
+	 <li>Como ficaria o mapa de memória para este código? </li>
+	 <li>Quais as principais vantagens em se escrever um código em linguagem de montagem? </li>
+	</ol> 
+      <p></p>
+	
+      <p>
+	Agora que você já refletiu sobre esse trecho de código em
+	linguagem de montagem, vamos montá-lo utilizando o montador
+	disponibilizado em:
+	<a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/IAS-Assembler/assembler.html">assembler.html</a>
+      </p>
+      <p>
+	</p><ol>
+
+	  <li>
+	    Primeiro, crie um novo arquivo no editor <i>online</i> clicando no botão <img src="./lab04_files/bt-adicionar.png">, indicado na figura abaixo:
+	    <center><br><img src="./lab04_files/montador-criando-arquivo.png"></center>	    
+	  </li>
+
+	  <li>
+	    Em seguida, copie o código acima para a janela de texto do editor e clique em <tt>Load IAS Sim</tt>.  
+	    Você irá perceber que o código foi traduzido para hexadecimal e inserido automaticamente como um mapa de memória na caixa de mapa de memória do simulador IAS. 
+	    O processo de tradução de um programa em linguagem de montagem (do inglês: <i>assembly language</i>) para linguagem de máquina é chamado de montagem e o programa responsável pelo processo de montagem é chamado de montador (do inglês: <i>assembler</i>). 
+	    <center><br><img src="./lab04_files/montador-run-code.png"></center>
+	  </li>
+
+	  <li>
+	    Observe que a janela do simulador IAS pode ser aumentada ou destacada da aba utilizando-se os ícones <img src="./lab04_files/montador-icones-dimensionamento.png">, 
+	      localizados no canto superior direito da tela. Clique no ícone do meio para maximizar o simulador.
+	    <center><br><img src="./lab04_files/montador-tela-cheia.png"></center>
+	  </li>
+
+
+	  <li>
+	    Por fim, com o código em linguagem de máquina no simulador, clique no botão <img src="./lab04_files/simulador-bt-load.png"> para carregar o programa na memória e 
+	    depois no botão <img src="./lab04_files/simulador-bt-step.png"> para executar as instruções uma a uma.
+	  </li>
+	</ol>
+      <p></p>
+
+      <p>
+	Observe que é possível redimensionar a tela do simulador (você pode aumentar pela barra lateral ou maximizar o simulador). 
+	Você já está apto a utilizar o nosso editor e montador!  Agora, vamos ao exercício do laboratório. Obs.: seus arquivos são salvos localmente de maneira automática pelo editor. Entretanto, caso o cache do navegador seja apagado ou ocorra uma falha na sincronização de sua conta (cota de disco excedida no IC, por exemplo), eles podem ser perdidos.  
+ 
+      </p>
+      <h3>Descrição</h3>
+
+      <p>
+	Escreva um programa em linguagem de montagem para o <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab02/lab02.html">laboratório 2</a> e para o <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab03/lab03.html">laboratório 3</a>. 
+	Submeta no Susy um arquivo para a solução de cada exercício.
+      </p>
+      
+      <p>
+	<b>ATENÇÃO</b>: O mnemônico da instrução de modificação de endereço (p.ex: <tt>STOR M(X, 28:39</tt>))é <tt>STA</tt>.
+      </p>
+
+      
+      <h3>Requisitos (ATENÇÃO!)</h3>
+      
+      <ul>
+	<li>O tamanho dos vetores deve ser lido da memória, no
+	endereço 0x3FF;</li>
+
+	<li>Os vetores possuem pelo menos um elemento;</li>
+
+	<li>
+	  Os endereços dos vetores (endereços do primeiro elemento de cada
+	  vetor) devem ser lidos da memória (endereços 0x3FD e 0x3FE);
+	</li>
+		  
+	<li>
+	  Seu mapa de memória deve ser organizado em 3 partes: 
+	  <ul>
+	    <li>Na primeira parte há o código (instruções) e
+	    dados; </li>
+	    <li>Na segunda parte (o "meio" do mapa de memória) estão
+	      os 2 vetores; </li>
+	    <li>Nas 3 últimas posições estão armazenados os endereços
+	      iniciais e o tamanho dos vetores, conforme explicado no
+	      item acima.</li>
+	  </ul>
+	  Observe que, para submissão, somente a primeira parte será necessária;
+	</li>
+
+	<li>
+	  Mantenha o código no início da memória. Em especial, não
+	  escreva código a partir do endereço 0x100, pois
+	  os <i>scripts</i> de teste utilizados para validação do seu
+	  programa podem armazenar os vetores de teste nestas posições.
+	</li>	
+	  
+	<li>
+	  Termine a execução com um salto para o endereço 0x400;
+	</li>
+
+	<li>
+	  <b>Antes de terminar a execução, salve o resultado do produto escalar no registrador
+	    <tt>AC</tt>. A corretude será verificada através da inspeção do valor neste registrador.</b>
+	</li>
+      </ul>
+	
+      <h3>Dicas</h3>
+      
+      <ul>
+	<li>
+	Para avaliar seu programa, executaremos o mesmo com 10 entradas diferentes e verificaremos o resultado armazenado no registrador AC.
+	</li>
+      </ul>
+
+      <h3>Avaliação</h3>
+      <p>
+A avaliação do código gerado será realizada com o mecanismo de automação de testes do simulador IAS, disponível na página:  <a href="http://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/IAS-sim/testmodule.html">http://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/IAS-sim/testmodule.html</a>. Veja uma explicação sobre este mecanismo na atividade de laboratório 2.
+Os testes serão os mesmos dos laboratórios 2 e 3.
+      </p>
+
+      <h3>Entrega</h3>
+
+      <p>
+	<b>
+	  Você deve submeter dois arquivo no SuSy, chamados
+	  raXXXXXX-lab2.as e raXXXXXX-lab3.as, em que XXXXXX é seu RA
+	  com 6 dígitos.
+	</b>
+      </p>
+
+      <p>
+	Endereço para a entrega da atividade no sistema SuSy:
+	</p><ul>
+	  <li>
+	    raXXXXXX-lab2.as: 
+	    <a href="https://susy.ic.unicamp.br:9999/mc404abef/04ab1" target="_blank">
+	      https://susy.ic.unicamp.br:9999/mc404abef/04ab1</a> (Turmas A/B) ou 
+	    <a href="https://susy.ic.unicamp.br:9999/mc404abef/04ef_1" target="_blank">
+	      https://susy.ic.unicamp.br:9999/mc404abef/04ef_1</a> (Turmas E/F).
+	  </li>
+	  <li>
+	    raXXXXXX-lab3.as: 
+	    <a href="https://susy.ic.unicamp.br:9999/mc404abef/04ab_2" target="_blank">
+	      https://susy.ic.unicamp.br:9999/mc404abef/04ab_2</a> (Turmas A/B) ou 
+	    <a href="https://susy.ic.unicamp.br:9999/mc404abef/04ef_2" target="_blank">
+	      https://susy.ic.unicamp.br:9999/mc404abef/04ef_2</a> (Turmas E/F).
+	  </li>
+      <p></p>
+
+    </ul></div>
+    
+
+</body></html>

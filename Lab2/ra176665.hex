@@ -1,0 +1,13 @@
+000 09 103 0B 105 # carrego o valor de g (armazenado na posicao 103) para MQ; multiplico pelo valor de x (na posicao 105)
+001 0A 000 15 000 # carrego o valor de MQ para AC; divido o valor de AC por 2, ao deslocar os bits para a direita (RSH)
+002 21 104 09 103 # armazeno valor de AC em k (na posicao 104); carrego o valor de g (armazenado na posicao 103) para MQ
+003 0B 105 0A 000 # multiplico MQ pelo valor de x (na posicao 105); carrego o valor de MQ para AC
+004 0C 104 0A 000 # divido o valor de AC por k (posicao 104); carrego o valor do quociente em MQ para AC
+005 05 104 15 000 # somo valor de AC com k (posicao 104); divido o valor de AC por 2
+006 21 104 01 101 # armazeno valor de AC em k (posicao 104); carrego valor do contador (posicao 101) para AC;
+007 06 102 21 101 # subtraio 1 (0x102) de AC; armazeno valor de AC na posicao 101 (novo valor do contador)
+008 10 002 01 104 # realizo um jump para a posicao 002 se AC for maior ou igual a zero; carrego valor de k (posicao 104) para AC
+009 0D 400 00 000 # salto para o fim da memória
+101 00 000 00 009 # contador
+102 00 000 00 001 # constante para o contador
+103 00 000 00 00A # constante para a gravidade

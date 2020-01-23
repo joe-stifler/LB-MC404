@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0085)https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab06/lab06.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./bootstrap.css" rel="stylesheet">
+    
+  </head>
+
+  <body style="background: transparent; margin: 0pt">
+    
+    <div class="row-fluid">
+      
+
+      <h2>Atividade de Laboratório 6</h2>
+
+      <h3>Objetivos</h3>
+      
+      <p>
+	O objetivo desta atividade de laboratório é dar continuidade no aprendizado
+	da linguagem de montagem da arquitetura ARM. Neste exercício você se familiarizará
+	com a construção e invocação de rotinas.
+      </p>
+
+      <h3>Descrição</h3>
+
+      <p>
+	Em alguns casos, você não pode confiar totalmente na memória de dados do
+	sistema. Por exemplo, em situações em que os dados foram transmitidos por
+	um meio sujeito a erros. Ainda, mesmo estando inicialmente corretos em
+	uma memória do tipo DRAM, os <i>bits</i> podem mudar aleatoriamente de
+	estado devido ao decaimento de partículas alfa
+	(<a href="http://en.wikipedia.org/wiki/Soft_error#Alpha_particles_from_package_decay"><i>soft
+	errors</i></a>) proveniente de isótopos radioativos presentes no
+	encapsulamento do <i>chip</i> (*). Para contornar esse problema e usando seus
+	conhecimentos de correção de erros, você decide implementar duas funções
+	em linguagem de montagem ARM. A primeira recebe 4 <i>bits</i> de dados e os
+	transforma em 7 <i>bits</i>, sendo 3 deles destinados à verificação da
+	consistência dos 4 <i>bits</i> de dados. A segunda recebe os 7 <i>bits</i>
+	codificados e recupera os 4 <i>bits</i> de dados. A codificação é conhecida
+	como código
+	de <a href="http://en.wikipedia.org/wiki/Hamming%287,4%29">Hamming(7,4)</a>
+	e irá aumentar a confiabilidade da memória de dados, uma vez que,
+	checando os 7 <i>bits</i>, você conseguirá determinar se um dos 4 <i>bits</i>
+	originais foi alterado por uma partícula alfa (ou outros tipos de
+	partículas que perturbam o estado da DRAM) ou por erros na transmissão dos dados.
+      </p>
+
+      <p></p><h4>Codificação</h4><p></p>
+
+      <p>
+	Escreva uma função folha, que é uma função que não faz outras chamadas, com o rótulo
+	"<tt>encode</tt>". No registrador <tt>R0</tt>, sua função deve receber o
+	valor a ser codificado. Lembre-se que <tt>R0</tt> possui 32 <i>bits</i>, então
+	suponha que os 4 <i>bits</i> menos significativos de <tt>R0</tt> serão a entrada.
+      </p>
+     
+      <p>
+	Para construir a saída, você deve entender como o código de Hamming(7,4)
+	codifica 4 <i>bits</i>. Assuma que o vetor de 4 <i>bits</i> da entrada
+	contenha:
+      </p>
+      <p>
+	d<sub>1</sub> d<sub>2</sub> d<sub>3</sub> d<sub>4</sub>
+      </p>
+
+      <p>
+	A saída então será 
+      </p>
+
+      <p>
+	p<sub>1</sub> p<sub>2</sub> d<sub>1</sub> p<sub>3</sub> d<sub>2</sub> d<sub>3</sub> d<sub>4</sub> 
+      </p>
+     
+      <p> 
+	Os novos <i>bits</i> introduzidos com o radical <b>p</b>
+	são <i>bits</i> de <b>paridade</b>. Cada um dos 3 <i>bits</i> de
+	paridade é responsável por refletir a paridade de um determinado
+	subconjunto de <i>bits</i> (um subconjunto de 3 elementos dos
+	4 <i>bits</i> de entrada disponíveis). Um <i>bit</i> de paridade
+	contém <b>1</b> caso o conjunto de <i>bits</i> avaliado tenha um número
+	ímpar de <b>1</b>s, ou <b>0</b> caso contrário. Siga a tabela:
+      </p>
+
+      <p>
+	</p><table border="1">
+	  <tbody><tr><td><i>Bit</i> de paridade</td><td>Subconjunto de <i>bits</i> testados</td></tr>
+	  <tr><td>p<sub>1</sub></td><td>d<sub>1</sub> d<sub>2</sub> d<sub>4</sub></td></tr>
+	  <tr><td>p<sub>2</sub></td><td>d<sub>1</sub> d<sub>3</sub> d<sub>4</sub></td></tr>
+	  <tr><td>p<sub>3</sub></td><td>d<sub>2</sub> d<sub>3</sub> d<sub>4</sub></td></tr>
+	</tbody></table>
+      <p></p>
+
+      <p>
+	Coloque a saída em <tt>R0</tt> e retorne.
+      </p>
+
+      <p>
+	Dicas:
+        </p><ol>
+	  <li>O "ou-exclusivo" (XOR) é um operador lógico que facilita o cálculo de <i>bits</i> de paridade.</li>
+	  <li>A instrucão AND é útil para deixar apenas uma parte de um conjunto de <i>bits</i> setado.</li>
+	</ol>
+      <p></p>
+
+      <p></p><h4>Decodificação</h4><p></p>
+
+      <p>
+	Se você for um aficcionado por matemática ou simplesmente ler o artigo
+	sobre o código de Hamming, eventualmente irá perceber que a mágica está
+	em calcular a paridade de subconjuntos que se sobrepõem. Isso não só torna
+	possível detectar quando um <i>bit</i> foi invertido,
+	mas também determinar exatamente qual <i>bit</i> foi invertido e, se necessário,
+	corrigi-lo. Infelizmente, se dois <i>bits</i> forem invertidos, não há
+	como corrigir. Três ou mais erros podem gerar um dado válido e causar um
+	erro indetectável. Neste exercício, porém, você deve assumir que no máximo
+	2 <i>bits</i> podem ser alterados. Sua função "<tt>decode</tt>" deve receber
+	em <tt>R0</tt> o código de Hamming(7,4) de um dado qualquer. Como esse código
+	possui apenas 7 <i>bits</i> e o registrador <tt>R0</tt> possui 32, assuma que a
+	entrada está nos 7 <i>bits</i> menos significativos do registrador. Como
+	saída de sua função, você deverá retornar o dado original (de
+	4 <i>bits</i>) no registrador <tt>R0</tt>. Utilize os 4 <i>bits</i> menos
+	significativos de <tt>R0</tt> e garanta que todos os outros <i>bits</i> estejam
+	zerados. Também retorne em R1 o número 1 caso você tenha detectado algum
+	erro, ou 0 caso contrário. Não é necessário corrigir o valor caso seja detectado erro.
+      </p>
+
+      <p>
+	Extrair o campo de dados é trivial. Contudo, para detectar se o campo de
+	dados extraído está correto, isto é, se não contém nenhum erro devido a
+	inversões de <i>bits</i> na memória, você deve <i>verificar a
+	paridade</i> para cada um dos 3 subconjuntos. Você pode utilizar o
+	operador <i>ou-exclusivo</i>, ou XOR, nos <i>bits</i> de um determinado
+	subconjunto. Por exemplo, para verificar a paridade pela qual o bit
+	p<sub>1</sub> está responsável, p<sub>1</sub> XOR d<sub>1</sub> XOR
+	d<sub>2</sub> XOR d<sub>4</sub> deve ser igual a <b>0</b>. Caso
+	contrário, há um erro no dado codificado. Faça isso para os três
+	subconjuntos a fim de atestar se você deve confiar no dado codificado
+	com Hamming(7,4).
+      </p>
+
+      <h4>Testes</h4>
+
+      <p>
+	Utilize o código modelo abaixo para desenvolver seu programa. 
+
+	</p><ul>
+	  <li>Código modelo: <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab06/hamming-template.s">hamming-template.s</a></li>
+	</ul>
+
+	Neste modelo, a função <i>_start</i> é a primeira
+	função a ser chamada. Esta função chama outras funções para ler os dados da entrada 
+	padrão, codificar o dado e imprimi-lo na saida padrão. Note que:
+	<ul>
+	  <li>
+	    a função de codificação e decodificação estão incompletas. Você deve implementá-las!
+	  </li>
+	  <li>
+	    a função <tt>_start</tt> contém código que lê uma cadeia
+	    de caracteres da entrada padrão, converte-a para um número
+	    binário, invoca a função <tt>encode</tt> para codificar o
+	    valor, converte o resultado para uma cadeia de caracteres
+	    e finalmente imprime esta cadeia na saída padrão. Você
+	    deve estender o código para que ele também leia uma
+	    cadeia de caracteres que representa um valor codificado e
+	    realize o processo de decodificação do valor. O valor
+	    decodificado, bem como um valor que indica se algum erro
+	    foi detectado (1, caso um erro seja detectado, ou 0, caso contrário) 
+	    devem ser impressos na saída padrão como resultado do processo de decodificação.
+	  </li>
+	</ul>
+
+      <p></p>
+      
+      <p>
+	Os casos de teste abertos podem ser encontrados em: <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab06/testes_abertos.txt">testes_abertos.txt</a>.
+      </p>
+
+      <p>
+	(*) O problema de isótopos radiotivos do encapsulamento é - parcialmente -
+	resolvido exigindo-se um certo nível de purificação (remoção dos
+	isótopos) do material próximo ao <i>chip</i> DRAM, que o reveste. Na prática,
+	um ambiente com radiação acima do comum (e.g. Fukushima) poderia
+	facilmente bombardear um <i>chip</i> DRAM com erros, tornando impraticável o
+	funcionamento do sistema. Isto é um problema cada vez maior conforme os
+	<i>chips</i> diminuem de tamanho e aproximam-se de escalas atômicas e, por esse
+	motivo, uma partícula alfa é suficiente para perturbar um <i>chip</i>. Este
+	problema foi descoberto por volta da década de 70.
+      </p>
+
+      <h3>Entrega e avaliação</h3>
+
+      <p>
+	O arquivo referente à atividade deve ser submetido para avaliação
+	utilizando-se o sistema Susy em:
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/06ab" target="_blank">
+	  https://susy.ic.unicamp.br:9999/mc404abef/06ab
+	</a> ou 
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/06ef" target="_blank">
+	  https://susy.ic.unicamp.br:9999/mc404abef/06ef
+	</a>.
+      </p>
+      <p>
+	É necessário que você envie apenas o arquivo com o código em linguagem de montagem.
+      </p>
+      <p>
+	Note que o Susy não fará a correção automática do seu programa.
+      </p>
+      
+    </div>
+    
+  
+
+
+</body></html>

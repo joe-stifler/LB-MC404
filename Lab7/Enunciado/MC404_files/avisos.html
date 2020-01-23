@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0085)https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab07/lab07.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./bootstrap.css" rel="stylesheet">
+    
+  </head>
+
+  <body style="background: transparent; margin: 0pt">
+    
+    <div class="row-fluid">
+      
+
+      <h2>Atividade de Laboratório 7</h2>
+
+      <h3>Objetivos</h3>
+      
+      <p>
+	O objetivo desta atividade é exercitar a utilização de vetores
+	e matrizes utilizando o conjunto de instruções da arquitetura
+	ARM.
+      </p>
+
+      <h3>Descrição</h3>
+
+      <center>
+      <img src="./PascalTriangleAnimated2.gif">
+      </center>
+
+      <p>
+	Escreva um programa em linguagem de montagem ARM que calcule e
+	imprima as primeiras N linhas
+	do <a href="https://pt.wikipedia.org/wiki/Tri%C3%A2ngulo_de_Pascal" target="_blank">Triângulo de Pascal</a>.
+      </p>
+
+
+      <p>
+	Entrada:
+	</p><ul>
+	  <li>Seu programa receberá como entrada o valor N, representado por 3 dígitos hexadecimais. </li>
+	</ul>
+      <p></p>
+
+      <p>
+	Saída:
+	</p><ul>
+	  <li>
+	    Seu programa deverá imprimir como saída as N primeiras
+	    linhas do triângulo de Pascal.
+	  </li>
+	  <li>
+	    Cada linha da saída deverá corresponder a uma linha do
+	    triângulo e deverá ser terminada com o caracter '\n'.
+	  </li>
+	  <li>
+	    Os elementos de cada linha deverão ser representados com 8
+	    dígitos hexadecimais, separados por um único espaço. Não
+	    deverão haver espaços adicionais ao início ou final da
+	    linha.
+	  </li>
+	</ul>
+      <p></p>
+
+      <p>
+	Os números em hexadecimal não deverão conter o
+	prefixo <tt>0x</tt> e não deverão utilizar letras
+	minúsculas. Para receber ou imprimir dados no simulador,
+	deverão ser utilizadas as chamadas de sistema (<i>syscalls</i>) <tt>read</tt>
+	e <tt>write</tt>.  
+      </p>
+
+      <h3>Dicas</h3>
+      
+      <p>
+	</p><ul>
+	  <li>Não é necessário tratar <i>overflow</i>.  </li>
+	  <li>N pertence ao intervalo [0, 2FF]</li>
+	</ul>
+      <p></p>
+
+      <h3>Exemplo</h3>
+
+      <p>
+	Entrada:</p><pre>007</pre>
+      <p></p>
+      <p>
+	Saída:
+	</p><pre>00000001
+00000001 00000001
+00000001 00000002 00000001
+00000001 00000003 00000003 00000001
+00000001 00000004 00000006 00000004 00000001
+00000001 00000005 0000000A 0000000A 00000005 00000001
+00000001 00000006 0000000F 00000014 0000000F 00000006 00000001</pre>
+      <p></p>
+
+      <h3>Entrega e avaliação</h3>
+
+      <p>Você deve submeter APENAS um arquivo no SuSy, chamado raXXXXXX.s, em que XXXXXX é seu ra com 6 dígitos.</p>
+
+      <p>
+	O arquivo referente à atividade deve ser submetido para avaliação
+	utilizando-se o sistema Susy em:
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/07ab" target="_blank">
+	  https://susy.ic.unicamp.br:9999/mc404abef/07ab
+	</a> ou 
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/07ef" target="_blank">
+	  https://susy.ic.unicamp.br:9999/mc404abef/07ef
+	</a>.
+      </p>
+
+    </div>
+    
+  
+
+
+</body></html>

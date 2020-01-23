@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0085)https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab03/lab03.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./lab03_files/bootstrap.css" rel="stylesheet">
+    
+  </head>
+
+  <body style="background: transparent; margin: 0pt">
+    
+    <div class="row-fluid">
+      
+
+      <h2>Atividade de Laboratório 3</h2>
+
+      <h3>Objetivos</h3>
+
+        O objetivo desta atividade é exercitar o conceito de laço e o método
+        de acesso indireto à memória do computador IAS.
+
+      <h3>Descrição</h3>
+
+      <p>
+	Escreva um programa em linguagem de máquina IAS (usando mapa
+	de memória) para calcular o produto escalar de dois vetores.
+	Produto escalar é uma operação que realiza a soma dos produtos
+	de todos os elementos de 2 vetores, dois a dois. Por exemplo,
+	para os vetores A=(1,2) e B=(4,13), temos o seguinte produto
+	escalar: 1*4+2*13 = 30.
+	
+	Você pode supor que os vetores possuem o mesmo tamanho,
+	contudo esse tamanho é arbitrário. Os vetores podem ou não
+	estar representados consecutivamente no mapa de memória. Mais
+	informações são apresentadas na seção abaixo.
+      </p>
+      
+      <h3>Requisitos (ATENÇÃO!)</h3>
+      
+      <ul>
+	<li>O tamanho dos vetores deve ser lido da memória, no
+	endereço 0x3FF;</li>
+
+	<li>Os vetores possuem pelo menos um elemento;</li>
+
+	<li>
+	  Os endereços dos vetores (endereços do primeiro elemento de cada
+	  vetor) devem ser lidos da memória (endereços 0x3FD e 0x3FE);
+	</li>
+		  
+	<li>
+	  Seu mapa de memória deve ser organizado em 3 partes: 
+	  <ul>
+	    <li>Na primeira parte há o código (instruções) e
+	    dados; </li>
+	    <li>Na segunda parte (o "meio" do mapa de memória) estão
+	      os 2 vetores; </li>
+	    <li>Nas 3 últimas posições estão armazenados os endereços
+	      iniciais e o tamanho dos vetores, conforme explicado no
+	      item acima.</li>
+	  </ul>
+	  Observe que, para submissão, somente a primeira parte será necessária;
+	</li>
+
+	<li>
+	  Mantenha o código no início da memória. Em especial, não
+	  escreva código a partir do endereço 0x100, pois
+	  os <i>scripts</i> de teste utilizados para validação do seu
+	  programa podem armazenar os vetores de teste nestas posições.
+	</li>	
+	  
+	<li>
+	  Termine a execução com um salto para o endereço 0x400;
+	</li>
+
+	<li>
+	  <b>Antes de terminar a execução, salve o resultado do produto escalar no registrador
+	    <tt>AC</tt>. A corretude será verificada através da inspeção do valor neste registrador.</b>
+	</li>
+      </ul>
+	
+      <h3>Dicas</h3>
+      
+      <ul>
+	<li>
+	  O arquivo (<a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab03/blank.hex">blank.hex</a>)
+	  contém <b>todas</b> as posições de memória do IAS preenchidas
+	  com 0 - pode ser útil como "molde".
+	</li>
+	<li>
+	  Para facilitar o projeto e a implementação do programa, você
+	  pode considerar que a multiplicação gera apenas resultados
+	  de até 40 <i>bits</i>.
+	</li>
+      </ul>
+
+      <h3>Avaliação</h3>
+      <p>
+	Para avaliar seu programa, executaremos o mesmo com 10
+	entradas diferentes e verificaremos o resultado armazenado no
+	registrador AC.
+      </p>
+
+      <p>
+	A avaliação será realizada com o mecanismo de automação de testes do simulador IAS, disponível na página:
+	<a href="http://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/IAS-sim/testmodule.html" target="blank">
+	  http://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/IAS-sim/testmodule.html</a>.
+	Veja uma explicação sobre este mecanismo na atividade
+	de <a href="https://www.ic.unicamp.br/~edson/disciplinas/mc404/2017-2s/abef/labs/lab02/lab02.html">laboratório 2</a>.
+      </p>
+
+      <p>
+	O vetor de testes a seguir define os 5 casos de testes públicos desta atividade de laboratório. 
+	</p><pre>[ // five open test cases
+    {
+        "input":  [
+                    {"where": "ram", "position": "0x3FF", "value": 3}, // size of vectors
+                    {"where": "ram", "position": "0x3FD", "value": "0x211"}, // address of v1
+                    {"where": "ram", "position": "0x3FE", "value": "0x222"}, // address of v2
+
+                    {"where": "ram", "position": "0x211", "value": 0},
+                    {"where": "ram", "position": "0x212", "value": 2},
+                    {"where": "ram", "position": "0x213", "value": 5},
+
+                    {"where": "ram", "position": "0x222", "value": 1},
+                    {"where": "ram", "position": "0x223", "value": 6},
+                    {"where": "ram", "position": "0x224", "value": 9}
+
+                ],
+        "output": [{"where": "reg", "position": "ac",    "value": 57}]
+    },
+
+    {
+        "input":  [
+                    {"where": "ram", "position": "0x3FF", "value": 1}, // size of vectors
+                    {"where": "ram", "position": "0x3FD", "value": "0x200"}, // address of v1
+                    {"where": "ram", "position": "0x3FE", "value": "0x201"}, // address of v2
+                    
+                    {"where": "ram", "position": "0x200", "value": 101},
+                    
+                    {"where": "ram", "position": "0x201", "value": 4}
+
+                ],
+        "output": [{"where": "reg", "position": "ac",    "value": 404}]
+    },
+
+    {
+        "input":  [
+                    {"where": "ram", "position": "0x3FF", "value": 5}, // size of vectors
+                    {"where": "ram", "position": "0x3FD", "value": "0x200"}, // address of v1
+                    {"where": "ram", "position": "0x3FE", "value": "0x280"}, // address of v2
+
+                    {"where": "ram", "position": "0x200", "value": 0},
+                    {"where": "ram", "position": "0x201", "value": 0},
+                    {"where": "ram", "position": "0x202", "value": -5587},
+                    {"where": "ram", "position": "0x203", "value": 0},
+                    {"where": "ram", "position": "0x204", "value": 0},
+
+                    {"where": "ram", "position": "0x280", "value": -10},
+                    {"where": "ram", "position": "0x281", "value": 15},
+                    {"where": "ram", "position": "0x282", "value": 0},
+                    {"where": "ram", "position": "0x283", "value": 435333480},
+                    {"where": "ram", "position": "0x284", "value": -558870}
+
+                ],
+        "output": [{"where": "reg", "position": "ac",    "value": 0}]
+    },
+
+    {
+        "input":  [
+                    {"where": "ram", "position": "0x3FF", "value": 5}, // size of vectors
+                    {"where": "ram", "position": "0x3FD", "value": "0x200"}, // address of v1
+                    {"where": "ram", "position": "0x3FE", "value": "0x300"}, // address of v2
+
+                    {"where": "ram", "position": "0x200", "value": 6},
+                    {"where": "ram", "position": "0x201", "value": 0},
+                    {"where": "ram", "position": "0x202", "value": 128},
+                    {"where": "ram", "position": "0x203", "value": -432},
+                    {"where": "ram", "position": "0x204", "value": 1},
+
+                    {"where": "ram", "position": "0x300", "value": 63},
+                    {"where": "ram", "position": "0x301", "value": -12},
+                    {"where": "ram", "position": "0x302", "value": -404},
+                    {"where": "ram", "position": "0x303", "value": 612},
+                    {"where": "ram", "position": "0x304", "value": 0}
+
+
+                ],
+        "output": [{"where": "reg", "position": "ac",    "value": -315718}]
+    },
+
+    {
+        "input":  [
+                    {"where": "ram", "position": "0x3FF", "value": 10}, // size of vectors
+                    {"where": "ram", "position": "0x3FD", "value": "0x300"}, // address of v1
+                    {"where": "ram", "position": "0x3FE", "value": "0x380"}, // address of v2
+
+                    {"where": "ram", "position": "0x300", "value": 334},
+                    {"where": "ram", "position": "0x301", "value": 22},
+                    {"where": "ram", "position": "0x302", "value": -982},
+                    {"where": "ram", "position": "0x303", "value": -10},
+                    {"where": "ram", "position": "0x304", "value": -919},
+                    {"where": "ram", "position": "0x305", "value": 911},
+                    {"where": "ram", "position": "0x306", "value": 7000},
+                    {"where": "ram", "position": "0x307", "value": -1},
+                    {"where": "ram", "position": "0x308", "value": 182},
+                    {"where": "ram", "position": "0x309", "value": 9},
+
+                    {"where": "ram", "position": "0x380", "value": 324},
+                    {"where": "ram", "position": "0x381", "value": 237},
+                    {"where": "ram", "position": "0x382", "value": 423},
+                    {"where": "ram", "position": "0x383", "value": 345},
+                    {"where": "ram", "position": "0x384", "value": 8},
+                    {"where": "ram", "position": "0x385", "value": 43},
+                    {"where": "ram", "position": "0x386", "value": 1},
+                    {"where": "ram", "position": "0x387", "value": 288},
+                    {"where": "ram", "position": "0x388", "value": 177},
+                    {"where": "ram", "position": "0x389", "value": 0}
+
+                ],
+        "output": [{"where": "reg", "position": "ac",    "value": -234659}]
+    }
+
+]</pre>
+     <p></p>
+
+
+      <h3>Entrega</h3>
+
+      <p>
+	Endereço da atividade no sistema SuSy:
+        <a href="https://susy.ic.unicamp.br:9999/mc404abef/03ab" target="_blank">
+		https://susy.ic.unicamp.br:9999/mc404abef/03ab</a> ou 
+	<a href="https://susy.ic.unicamp.br:9999/mc404abef/03ef" target="_blank">
+		https://susy.ic.unicamp.br:9999/mc404abef/03ef</a>
+      </p>
+
+      <ul>
+          <li><b>Você deve submeter APENAS um arquivo no SuSy, chamado
+          raXXXXXX.hex, em que XXXXXX é seu ra com 6 dígitos.</b></li>
+      </ul>
+
+    </div>
+    
+  
+
+
+</body></html>
